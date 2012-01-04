@@ -1,88 +1,93 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset='utf-8'>
+<html> 
+<head> 
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1"> 
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script type="text/javascript" src="html5_uploader.jquery.js"></script>
+<script>
+    $(function(){
+		$("#drop-area-id").html5_uploader().bind("html5_uploader.dragenter", function(){
+			$(this).addClass("drop-area-hover");
+			$(".log").prepend("<div>Event: Dragenter</div>");
+		}).bind("html5_uploader.dragleave html5_uploader.drop", function(){
+			$(".log").prepend("<div>Event: Dragleave</div>");
+			$(this).removeClass("drop-area-hover");
+		}).bind("html5_uploader.drop", function(evt, files, files_count){
+				$(".log").prepend("<div>Event: drop , Droped  "+files_count+" files</div>");
+			$(this).trigger('html5_uploader.send', [{
+				url : "upload.php" //UPLOAD LINK
+			}]);
+		}).bind("html5_uploader.start", function(evnt, files_count){
+			$(".log").prepend("<div>Event: start , Start upload "+files_count+" files</div>");
+		}).bind("html5_uploader.finish", function(evnt, files_count){
+			$(".log").prepend("<div>Finished upload</div>");
+		}).bind("html5_uploader.start_one", function(evnt, file_name, file_number, total){
+			$(".log").prepend("<div class='progres-bar'><div></div></div><div>Event: start_one, Start upload file "+file_name+" with no. "+file_number+", total "+total+"</div>");
+		}).bind("html5_uploader.finish_one", function(evnt, response_server, file_name, file_number, total){
+			$(".log").prepend("<div>Event: finish_one, Finished upload file "+file_name+" with no. "+file_number+", total "+total+", server response "+response_server+"</div>");
+		}).bind("html5_uploader.error", function(evnt,  file_name, e){
+			$(".log").prepend("<div>Event: error, Error file "+file_name+" , error detail "+e+"</div>");
+		}).bind("html5_uploader.old_browser", function(evnt){
+			$(".log").prepend("<div>Event: old_browser, You have old browser</div>");
+		}).bind("html5_uploader.abort", function(evnt){
+			$(".log").prepend("<div>Event: abort</div>");
+		}).bind("html5_uploader.progress", function(evnt, uploaded, fileSize, fileName, number, total){
+			$(".log .progres-bar div").css("width",Math.round((uploaded/fileSize)*100)+"%" ).text("Progress "+ uploaded +" / "+ fileSize +"  - "+Math.round((uploaded/fileSize)*100)+"%")
+		});
+	});
 
-  <title>bordeux/jquery-html5Uploader @ GitHub</title>
-
-  <style type="text/css">
-    body {
-      margin-top: 1.0em;
-      background-color: #9d6eb2;
-      font-family: Helvetica, Arial, FreeSans, san-serif;
-      color: #000000;
-    }
-    #container {
-      margin: 0 auto;
-      width: 700px;
-    }
-    h1 { font-size: 3.8em; color: #62914d; margin-bottom: 3px; }
-    h1 .small { font-size: 0.4em; }
-    h1 a { text-decoration: none }
-    h2 { font-size: 1.5em; color: #62914d; }
-    h3 { text-align: center; color: #62914d; }
-    a { color: #62914d; }
-    .description { font-size: 1.2em; margin-bottom: 30px; margin-top: 30px; font-style: italic;}
-    .download { float: right; }
-    pre { background: #000; color: #fff; padding: 15px;}
-    hr { border: 0; width: 80%; border-bottom: 1px solid #aaa}
-    .footer { text-align:center; padding-top:30px; font-style: italic; }
-  </style>
-</head>
-
+</script>
+<style>
+html {
+	background-color: #2F2727;
+	background-image: url(images/radial_bg.png);
+	background-position: center center;
+	background-repeat: no-repeat;
+	background: -webkit-gradient(radial, center center, 0, center center, 460, from(#1a82f7), to(#2F2727));
+	background: -webkit-radial-gradient(circle, #1a82f7, #2F2727);
+	background: -moz-radial-gradient(circle, #1a82f7, #2F2727);
+	background: -ms-radial-gradient(circle, #1a82f7, #2F2727);
+}
+.progres-bar {
+width: 100%;
+background: white;
+}
+.progres-bar div {
+background: black;
+text-align:center;
+width: 0;
+height:20px;
+color: white;
+text-overflow: ellipsis-word;
+}
+.drop-area {
+	width: 70%;
+	-webkit-border-radius: 40px;
+	-moz-border-radius: 40px;
+	border-radius: 40px;
+	height: 400px;
+	background: rgba(203,103,103, 0.5);
+	border: 1px dashed #000;
+	margin:auto;
+	margin-top: 30px;
+}
+.drop-area-hover {
+background : yellow;
+}
+.log {
+margin: 20px;
+max-height: 200px;
+background: rgba(255,255,255,0.5);
+overflow-y : scroll;
+}
+</style>
+</head> 
 <body>
-  <a href="https://github.com/bordeux/jquery-html5Uploader"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
 
-  <div id="container">
-
-    <div class="download">
-      <a href="https://github.com/bordeux/jquery-html5Uploader/zipball/master">
-        <img border="0" width="90" src="https://github.com/images/modules/download/zip.png"></a>
-      <a href="https://github.com/bordeux/jquery-html5Uploader/tarball/master">
-        <img border="0" width="90" src="https://github.com/images/modules/download/tar.png"></a>
-    </div>
-
-    <h1><a href="https://github.com/bordeux/jquery-html5Uploader">jquery-html5Uploader</a>
-      <span class="small">by <a href="https://github.com/bordeux">bordeux</a></span></h1>
-
-    <div class="description">
-      This is jquery HTML5 Uploader with progressbar, Drag&drop
-    </div>
-
-    
-
-    
-
-    
-
-    
-
-    
-      <h2>Authors</h2>
-      <p>bordeux (git@bordeux.net)<br/>      </p>
-    
-
-    
-      <h2>Contact</h2>
-      <p>Krzysztof Bednarczyk (github@bordeux.net)<br/>      </p>
-    
-
-    <h2>Download</h2>
-    <p>
-      You can download this project in either
-      <a href="https://github.com/bordeux/jquery-html5Uploader/zipball/master">zip</a> or
-      <a href="https://github.com/bordeux/jquery-html5Uploader/tarball/master">tar formats.
-    </p>
-    <p>You can also clone the project with <a href="http://git-scm.com">Git</a>
-      by running:
-      <pre>$ git clone git://github.com/bordeux/jquery-html5Uploader</pre>
-    </p>
-
-    <div class="footer">
-      get the source code on GitHub : <a href="https://github.com/bordeux/jquery-html5Uploader">bordeux/jquery-html5Uploader</a>
-    </div>
-
-  </div>
-
-</body>
-</html>
+	<div id="drop-area-id" class="drop-area">
+	
+	</div>
+	<div class="log">
+	
+	</div>
+</body> 
+</html> 
