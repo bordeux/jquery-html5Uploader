@@ -1,3 +1,18 @@
+/*
+           DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+                   Version 2, December 2004
+ 
+Copyright (C) 2004 Sam Hocevar
+ 14 rue de Plaisance, 75014 Paris, France
+Everyone is permitted to copy and distribute verbatim or modified
+copies of this license document, and changing it is allowed as long
+as the name is changed.
+ 
+           DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+  TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
+ 
+ 0. You just DO WHAT THE FUCK YOU WANT TO.
+ */
 (function ($) {
 	jQuery.fn.html5_uploader = function () {
 		
@@ -34,6 +49,20 @@
 				$(this).triggerHandler('html5_uploader.drop', [evt.dataTransfer.files, this.files.length, evt]);
 				
 			}, false);
+			
+		$(this).click(function(){
+		tinputhandle = this;
+			$("<input>").attr({
+				"type" : "file",
+				"multiple" : "true"
+			}).click().change(function(evt){
+				tinputhandle.files = evt.target.files;
+				tinputhandle.count = tinputhandle.files.length;
+				$(tinputhandle).triggerHandler('html5_uploader.drop', [tinputhandle.files, tinputhandle.count, evt]);
+			});
+			
+		});
+		
 			$(this).bind("html5_uploader.send", function (evn, options) {
 				var options = jQuery.extend({
 						url : "?upload",
