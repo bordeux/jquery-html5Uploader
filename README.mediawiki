@@ -4,4 +4,4 @@
 
 = jQuery HTML5 Uploader =
 
-<p align="center"><a href="http://bordeux.github.com/jquery-html5Uploader/"><img src="http://img807.imageshack.us/img807/7163/demobutton.jpg" /></a></p>
+<p align="center"><a href="http://bordeux.github.com/jquery-html5Uploader/"><img src="http://i.imgur.com/GzGaber.png" /></a></p>
